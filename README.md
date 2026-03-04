@@ -42,6 +42,26 @@ cd codex-cli-dispatch
 chmod +x scripts/dispatch.sh
 ```
 
+## Configuration
+
+The script auto-detects paths, but you can override them via environment variables:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `OPENCLAW_WORKSPACE` | Parent of `scripts/` dir | OpenClaw workspace root (e.g., `~/clawd`) |
+| `OPENCLAW_BIN` | Auto-detect via `$PATH` | Path to `openclaw` binary |
+| `CODEX_BIN` | Auto-detect via `$PATH` | Path to `codex` binary |
+| `OPENCLAW_CONFIG` | `~/.openclaw/openclaw.json` | OpenClaw config file (for wake hooks) |
+
+**Example** — if your workspace is at `/opt/openclaw`:
+
+```bash
+export OPENCLAW_WORKSPACE=/opt/openclaw
+bash scripts/dispatch.sh --prompt "Fix the login bug" --task-name "login-fix"
+```
+
+> **Note:** Result files (`latest.json`, `task-meta.json`, `task-output.txt`) are written to `$OPENCLAW_WORKSPACE/data/codex-results/`. Make sure this directory is writable.
+
 ## Usage
 
 ### Basic Dispatch

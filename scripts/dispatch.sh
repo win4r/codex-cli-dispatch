@@ -7,17 +7,20 @@
 
 set -euo pipefail
 
-RESULT_DIR="/home/ubuntu/clawd/data/codex-results"
+# ---- Resolve paths (portable) ----
+# OPENCLAW_WORKSPACE: root of your OpenClaw workspace (e.g. ~/clawd)
+OPENCLAW_WORKSPACE="${OPENCLAW_WORKSPACE:-$(cd "$(dirname "$0")/.." 2>/dev/null && pwd)}"
+RESULT_DIR="${OPENCLAW_WORKSPACE}/data/codex-results"
 META_FILE="${RESULT_DIR}/task-meta.json"
 TASK_OUTPUT="${RESULT_DIR}/task-output.txt"
-OPENCLAW_BIN="/home/ubuntu/.npm-global/bin/openclaw"
-CODEX_BIN="${CODEX_BIN:-/home/ubuntu/.npm-global/bin/codex}"
+OPENCLAW_BIN="${OPENCLAW_BIN:-$(command -v openclaw 2>/dev/null || echo "openclaw")}"
+CODEX_BIN="${CODEX_BIN:-$(command -v codex 2>/dev/null || echo "codex")}"
 
 # Defaults
 PROMPT=""
 TASK_NAME="codex-$(date +%s)"
-TELEGRAM_GROUP="-5006066016"  # Default: Claude Code Tasks group
-WORKDIR="/home/ubuntu/clawd"
+TELEGRAM_GROUP=""
+WORKDIR="${OPENCLAW_WORKSPACE}"
 MODEL=""
 SANDBOX="workspace-write"
 FULL_AUTO="true"
@@ -171,7 +174,7 @@ fi
 # ---- Wake AGI or target agent ----
 GATEWAY_PORT="${OPENCLAW_GATEWAY_PORT:-18789}"
 HOOK_TOKEN=""
-OPENCLAW_CONFIG="/home/ubuntu/.openclaw/openclaw.json"
+OPENCLAW_CONFIG="${OPENCLAW_CONFIG:-${HOME}/.openclaw/openclaw.json}"
 if [ -f "$OPENCLAW_CONFIG" ]; then
     HOOK_TOKEN=$(jq -r '.hooks.token // ""' "$OPENCLAW_CONFIG" 2>/dev/null || echo "")
 fi

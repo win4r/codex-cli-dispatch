@@ -42,6 +42,26 @@ cd codex-cli-dispatch
 chmod +x scripts/dispatch.sh
 ```
 
+## 配置
+
+脚本会自动检测路径，你也可以通过环境变量覆盖：
+
+| 变量 | 默认值 | 说明 |
+|------|--------|------|
+| `OPENCLAW_WORKSPACE` | `scripts/` 的上级目录 | OpenClaw 工作区根目录（如 `~/clawd`） |
+| `OPENCLAW_BIN` | 从 `$PATH` 自动检测 | `openclaw` 可执行文件路径 |
+| `CODEX_BIN` | 从 `$PATH` 自动检测 | `codex` 可执行文件路径 |
+| `OPENCLAW_CONFIG` | `~/.openclaw/openclaw.json` | OpenClaw 配置文件（用于唤醒钩子） |
+
+**示例** — 如果你的工作区在 `/opt/openclaw`：
+
+```bash
+export OPENCLAW_WORKSPACE=/opt/openclaw
+bash scripts/dispatch.sh --prompt "修复登录 bug" --task-name "login-fix"
+```
+
+> **注意：** 结果文件（`latest.json`、`task-meta.json`、`task-output.txt`）会写入 `$OPENCLAW_WORKSPACE/data/codex-results/` 目录，请确保该目录可写。
+
 ## 使用方法
 
 ### 基本用法
